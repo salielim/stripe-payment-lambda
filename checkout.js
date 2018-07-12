@@ -1,7 +1,7 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 module.exports.handler = (event, context, callback) => {
-  console.log("creating charge...");
+  console.log("creating stripe charge...");
 
   // Pull out the amount and id for the charge from the POST
   console.log(event);
@@ -31,7 +31,7 @@ module.exports.handler = (event, context, callback) => {
         headers,
         statusCode: 200,
         body: JSON.stringify({
-          message: `Charge processed!`,
+          message: `Charge is successful`,
           charge
         })
       };
