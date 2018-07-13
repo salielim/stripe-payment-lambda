@@ -9,6 +9,7 @@ module.exports.handler = (event, context, callback) => {
   console.log(requestData);
   const amount = requestData.amount;
   const token = requestData.token.id;
+  const description = requestData.description;
   const metadata = requestData.metadata.id || "none"
 
   // Headers to prevent CORS issues
@@ -23,7 +24,7 @@ module.exports.handler = (event, context, callback) => {
       amount,
       source: token,
       currency: "usd",
-      description: "Noderite Stripe Charge",
+      description: description,
       metadata: metadata,
       statement_descriptor: "Noderite",
     })
