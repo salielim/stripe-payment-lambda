@@ -9,6 +9,7 @@ module.exports.handler = (event, context, callback) => {
   console.log(requestData);
   const amount = requestData.amount;
   const token = requestData.token.id;
+  const metadata = requestData.metadata.id || "none"
 
   // Headers to prevent CORS issues
   const headers = {
@@ -22,7 +23,9 @@ module.exports.handler = (event, context, callback) => {
       amount,
       source: token,
       currency: "usd",
-      description: "Serverless test Stripe charge"
+      description: "Noderite Stripe Charge",
+      metadata: metadata,
+      statement_descriptor: "Noderite",
     })
     .then(charge => {
       // Success response
