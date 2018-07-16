@@ -18,6 +18,17 @@ module.exports.handler = (event, context, callback) => {
     "Access-Control-Allow-Headers": "Content-Type"
   };
 
+  if (!amount || !token || !description | !metadata) {
+    const response = {
+      headers,
+      statusCode: 200,
+      body: JSON.stringify({
+        message: `Missing parameters`
+      })
+    };
+    callback(null, response);
+  }
+
   return stripe.charges
     .create({
       // Create Stripe charge with token
