@@ -29,6 +29,15 @@ module.exports.handler = (event, context, callback) => {
     callback(null, response);
   }
 
+  console.log('data: ', {
+    amount,
+    source: token,
+    currency: 'usd',
+    description: description,
+    metadata: metadata,
+    statement_descriptor: 'Noderite'
+  })
+
   return stripe.charges
     .create({
       // Create Stripe charge with token
@@ -36,8 +45,8 @@ module.exports.handler = (event, context, callback) => {
       source: token,
       currency: 'usd',
       description: description,
-      metadata: metadata,
-      statement_descriptor: 'Noderite'
+      // metadata: metadata,
+      // statement_descriptor: 'Noderite'
     })
     .then(charge => {
       // Success response
