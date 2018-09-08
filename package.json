@@ -1,4 +1,6 @@
 {
+  "name": "Noderite Stripe Payment Lambda",
+  "version": "0.1.0",
   "dependencies": {
     "stripe": "^5.8.0"
   }
