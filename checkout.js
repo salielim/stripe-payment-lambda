@@ -1,7 +1,7 @@
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 module.exports.handler = (event, context, callback) => {
-  console.log("creating stripe charge...");
+  console.log('creating stripe charge...');
 
   // Pull out the amount and id for the charge from the POST
   console.log(event);
@@ -9,20 +9,35 @@ module.exports.handler = (event, context, callback) => {
   console.log(requestData);
   const amount = requestData.amount;
   const token = requestData.token.id;
+  const description = requestData.description;
+  const metadata = requestData.metadata || 'none';
 
   // Headers to prevent CORS issues
   const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type"
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type'
   };
+
+  if (!amount || !token || !description | !metadata) {
+    const response = {
+      headers,
+      statusCode: 200,
+      body: JSON.stringify({
+        message: `Missing parameters`
+      })
+    };
+    callback(null, response);
+  }
 
   return stripe.charges
     .create({
       // Create Stripe charge with token
       amount,
       source: token,
-      currency: "usd",
-      description: "Serverless test Stripe charge"
+      currency: 'usd',
+      description: description,
+      metadata: metadata,
+      statement_descriptor: 'Noderite'
     })
     .then(charge => {
       // Success response
