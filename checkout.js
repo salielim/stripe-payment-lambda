@@ -32,7 +32,7 @@ module.exports.handler = (event, context, callback) => {
   console.log('data: ', {
     amount,
     source: token,
-    currency: 'usd',
+    currency: 'sgd',
     description: description,
     metadata: metadata,
     statement_descriptor: 'Noderite'
@@ -43,7 +43,7 @@ module.exports.handler = (event, context, callback) => {
       // Create Stripe charge with token
       amount,
       source: token,
-      currency: 'usd',
+      currency: 'sgd',
       description: description,
       // metadata: metadata,
       // statement_descriptor: 'Noderite'
