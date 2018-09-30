@@ -1,5 +1,6 @@
 # Environment/secret variables
-secrets.json
+secrets.dev.json
+secrets.prod.json
 
 # Dependency directories
 node_modules/

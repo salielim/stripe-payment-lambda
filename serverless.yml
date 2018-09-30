@@ -9,17 +9,22 @@ service: gatsby-serverless-stripe
 
 # Configuration variables
 custom:
-  secrets: ${file(secrets.json)}
+  stages:
+    - dev
+    - prod
+  secrets:
+    dev: ${file(secrets.dev.json)}
+    prod: ${file(secrets.prod.json)}
 
 # The `provider` block defines where your service will be deployed
 provider:
   name: aws
   apiKeys:
-    - anApiKey
+    - ${self:provider.stage}-key
   runtime: nodejs6.10
-  stage: dev
+  stage: ${opt:stage,'dev'}
   environment:
-    STRIPE_SECRET_KEY: ${self:custom.secrets.stripeSecretKey} # Stripe secret API key
+    STRIPE_SECRET_KEY: ${self:custom.secrets.${self:provider.stage}.stripeSecretKey}
 
 # The `functions` block defines what code to deploy
 functions:
