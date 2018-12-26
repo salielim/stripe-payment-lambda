@@ -1,17 +1,11 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 
 module.exports.handler = (event, context, callback) => {
-  console.log("creating stripe charge...")
-
-  // Pull out the amount and id for the charge from the POST
-  console.log(event)
   const requestData = JSON.parse(event.body)
-  console.log(requestData)
   const amount = requestData.amount
   const token = requestData.token.id
   const description = requestData.description
   const email = requestData.token.email
-  console.log("email: ", email)
   const metadata = requestData.metadata || "none"
 
   // Headers to prevent CORS issues
@@ -31,15 +25,6 @@ module.exports.handler = (event, context, callback) => {
     callback(null, response)
   }
 
-  console.log("data: ", {
-    amount,
-    source: token,
-    currency: "sgd",
-    description: description,
-    metadata: metadata,
-    statement_descriptor: "Noderite"
-  })
-
   return stripe.charges
     .create({
       amount,
@@ -47,12 +32,8 @@ module.exports.handler = (event, context, callback) => {
       currency: "sgd",
       description: description,
       receipt_email: email
-      // metadata: metadata,
-      // statement_descriptor: 'Noderite'
     })
     .then(charge => {
-      // Success response
-      console.log(charge)
       const response = {
         headers,
         statusCode: 200,
@@ -64,8 +45,6 @@ module.exports.handler = (event, context, callback) => {
       callback(null, response)
     })
     .catch(err => {
-      // Error response
-      console.log(err)
       const response = {
         headers,
         statusCode: 500,
